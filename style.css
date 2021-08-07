@@ -3,9 +3,63 @@
     padding: 0;
 }
 
-.container {
-    margin: 1rem 10rem;
+body {
+    font-family: 'Roboto', sans-serif;
 }
+
+.container {
+    background-color: red;
+    width: 80%;
+    margin: auto;
+}
+
+.new-book-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: rgb(243, 243, 243);
+    width: 30%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem 2rem 2rem 2rem;
+    font-size: 1.3rem;
+    border-radius: 5px;
+}
+
+.new-book-modal input[type=text] {
+    height: 1.5rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: 1px solid rgb(141, 141, 141);
+}
+
+
+.new-book-modal div:not(:last-child) {
+    display: flex;
+    flex-direction: column;
+}
+
+.new-book-modal button {
+    width: 7rem;
+    margin: 1rem auto;
+    font-size: 1em;
+}
+
+.close-modal {
+    font-size: 1.3rem;
+    position: absolute;
+    right: 15px;
+}
+
+.close-modal:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
 
 .library-container {
     display: grid;
@@ -14,15 +68,60 @@
 }
 
 .book-div {
-    background-color: rgb(187, 187, 187);
-    height: 7rem;
+    background-color: rgb(233, 233, 233);
+    height: 18rem;
+    width: 14rem;
     margin: 0 1rem 1rem 0;
-    padding: 0.3rem 1rem 0 1rem;
+    padding: 0.3rem 1rem 1rem 1rem;
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    /* grid-template-rows: repeat(3, auto); */
+    text-align: center;
+    border-radius: 10px;
+}
+
+.book-div p {
+    word-break: break-word;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.header {
+    color: rgb(214, 126, 24);
+    font-size: 1.4rem;
+}
+
+.read-btn {
+    height: 2rem;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    outline: none;
+    width: 60%;
+    margin: auto;
+    background:rgb(97, 171, 255);
+    color: rgb(238, 238, 238);
+}
+
+.read-btn:hover {
+    cursor: pointer;
+    background:rgb(136, 191, 255);
+    transform: scale(0.92);
 }
 
 .delete {
-    width: 1rem;
     justify-self: end;
+    font-size: 1.5rem;
+}
+
+.delete:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+}
+
+.gray-background {
+    background-color: rgba(134, 134, 134, 0.856);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
 }

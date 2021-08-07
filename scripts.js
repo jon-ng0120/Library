@@ -6,69 +6,87 @@ const title = document.querySelector('.new-title')
 const author = document.querySelector('.new-author')
 const pages = document.querySelector('.new-pages')
 
+
 let submitBtn = document.querySelector('.sub')
 let books = [];
-
-submitBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    const newBook = new Book(title.value, author.value, pages.value) 
-    newBook.addBook()
-    createElements(newBook)
-})
 
 function Book(title, author, pages, readStatus) {
     this.title = title
     this.author = author
     this.pages = pages
     this.readStatus = readStatus
+    this.id = Math.ceil(Math.random() * 10000) + title
 }        
 
 Book.prototype.addBook = function() {
     books.push(this)
 }
 
+submitBtn.addEventListener('click', function(e) {
+    const readStatus = document.querySelector('input[name=read-status]:checked')
+    e.preventDefault();
+    const newBook = new Book(title.value, author.value, pages.value, readStatus.value) 
+    newBook.addBook()
+    createElements(newBook)
+})
+
 function createElements(ele) {
     const bookDiv = document.createElement('div');
     bookDiv.classList.add('book-div');
-    const elements = populateBookDiv(ele)
-    bookDiv.appendChild(createDeleteBtn())
-    bookDiv.appendChild(elements)
-    bookDiv.appendChild(createReadToggle())
+    bookDiv.setAttribute('data-id', ele.id)
+    bookDiv.innerHTML = `
+        <span class="delete">x</span>
+        <div>
+          <h2 class="header">Title</h2>
+          <p class="title"></p>
+          <h2 class="header">Author</h2>
+          <p class="author"></p>
+          <h2 class="header">Pages</h2>
+          <p class="pages"></p>
+        </div>
+    `
+    populateBookDiv(bookDiv, ele)
+    
+    bookDiv.appendChild(createReadToggle(ele))
     
     libraryContainer.appendChild(bookDiv)
 }
 
-function populateBookDiv(ele) {
-    const headings = ['title', 'author', 'pages']
-    const contentDiv = document.createElement('div')
-    contentDiv.classList.add('content-div')
-    let elements = headings.map(heading => {
-        const p = document.createElement('p');
-        p.textContent = `${heading.slice(0,1).toUpperCase() + heading.slice(1)}: ${ele[heading]}`;
-        // p.setAttribute('data', headings)
-        return p;
-    })
-    contentDiv.append(...elements)
-    return contentDiv
+function populateBookDiv(ele, obj) {
+    const title = ele.querySelector('.title')
+    const author = ele.querySelector('.author')
+    const pages = ele.querySelector('.pages')
+    title.textContent = obj.title
+    author.textContent = obj.author
+    pages.textContent = obj.pages
+    
 }
 
-function createReadToggle(readStatus) {
+function createReadToggle(ele) {
     const readBtn = document.createElement('button')
     readBtn.classList.add('read-btn')
-    readBtn.textContent = readStatus
+    readBtn.textContent = ele.readStatus
     return readBtn
 }
 
-function createDeleteBtn() {
-    const delBtn = document.createElement('button')
-    delBtn.textContent = 'X'
-    delBtn.classList.add('delete')
-    deleteBook(delBtn)
-    return delBtn
-}
+libraryContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('read-btn')) {
+        let readBtnText = e.target.textContent == 'Read' ? 'Not Read' : 'Read'
+        const identifier = e.target.parentElement.getAttribute('data-id');
+        e.target.textContent = readBtnText
+        books.forEach(((book) => {
+            if (book.title == identifier) {
+                book.readStatus = readBtnText
+            }
+        }))
+    }
 
-function deleteBook(ele) {
-    ele.addEventListener('click', function() {
-        this.parentElement.remove();
-    })
-}
+    if (e.target.classList.contains('delete')) {
+        const identifier = e.target.parentElement.getAttribute('data-id');
+        books.forEach(((book, index) => {
+            if (book.id == identifier) books.splice(index, 1)
+        }))
+        
+        e.target.parentElement.remove();
+    }
+})

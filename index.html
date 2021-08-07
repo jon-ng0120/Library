@@ -5,22 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
     <div class="container">
         <h1>Library</h1>
-        <div class="book">
-            <p class="title"></p>
-            <p class="author"></p>
-            <p class="pages"></p>
-        </div>
 
         <div class="new-book-modal">
-            <form>
+            <div class="new-book-inputs">
+                <span class="close-modal">x</span>
+                <h2>New Book</h2>
                 <div>
                     <label>Title</label>
-                    <input type="text" class="new-title">
+                    <input type="text" class="new-title"> <!-- 50 char max-->
                 </div>
                 <div>
                     <label>Author</label>
@@ -30,13 +32,21 @@
                     <label>Pages</label>
                     <input type="text" class="new-pages">
                 </div>
-
-                <button class="sub">Submit</button>
-            </form>
+                <div>
+                    <p class="read-status">Have you read it?</p>
+                    <input type="radio" name="read-status" value="Read" id="read-status-yes">
+                    <label for="read-status-yes">Yes</label>
+                    <input type="radio" name="read-status" value="Not Read" id="read-status-no">
+                    <label for="read-status-no">No</label>
+                </div>
+            </div>
+            
+            <button class="sub">Add Book</button>
         </div>
         <div class="library-container">
 
         </div>
+        <div class="gray-background"></div>
     </div>
     <script src="scripts.js"></script>
 </body>
