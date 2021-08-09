@@ -1,7 +1,10 @@
 'use strict'
 
+const NewBookModalBtn = document.querySelector('.open-new-book')
+const grayBackgroundDiv = document.querySelector('.gray-background')
 const libraryContainer = document.querySelector('.library-container')
-
+const closeModalBtn = document.querySelector('.close-modal');
+const newBookForm = document.querySelector('.new-book-modal')
 const title = document.querySelector('.new-title')
 const author = document.querySelector('.new-author')
 const pages = document.querySelector('.new-pages')
@@ -9,6 +12,7 @@ const pages = document.querySelector('.new-pages')
 
 let submitBtn = document.querySelector('.sub')
 let books = [];
+
 
 function Book(title, author, pages, readStatus) {
     this.title = title
@@ -28,6 +32,7 @@ submitBtn.addEventListener('click', function(e) {
     const newBook = new Book(title.value, author.value, pages.value, readStatus.value) 
     newBook.addBook()
     createElements(newBook)
+    closeNewBookForm()
 })
 
 function createElements(ele) {
@@ -69,6 +74,16 @@ function createReadToggle(ele) {
     return readBtn
 }
 
+function closeNewBookForm() {
+    const newBookModalInputs = newBookForm.querySelectorAll('input')
+    newBookForm.style.display = 'none';
+    grayBackgroundDiv.style.display = 'none';
+
+    Array.from(newBookModalInputs).forEach(element => {
+        element.type == 'text' ? element.value = "" : element.checked = false
+    })
+}
+
 libraryContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('read-btn')) {
         let readBtnText = e.target.textContent == 'Read' ? 'Not Read' : 'Read'
@@ -89,4 +104,13 @@ libraryContainer.addEventListener('click', (e) => {
         
         e.target.parentElement.remove();
     }
+})
+
+NewBookModalBtn.addEventListener('click', () => {
+    newBookForm.style.display = 'flex';
+    grayBackgroundDiv.style.display = 'block';
+})
+
+closeModalBtn.addEventListener('click', () => {
+    closeNewBookForm()
 })

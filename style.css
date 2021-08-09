@@ -8,8 +8,7 @@ body {
 }
 
 .container {
-    background-color: red;
-    width: 80%;
+    width: 70%;
     margin: auto;
 }
 
@@ -23,7 +22,7 @@ body {
     background-color: rgb(243, 243, 243);
     width: 30%;
     margin: auto;
-    display: flex;
+    display: none;
     flex-direction: column;
     padding: 0.8rem 2rem 2rem 2rem;
     font-size: 1.3rem;
@@ -63,14 +62,15 @@ body {
 
 .library-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     margin-top: 1rem;
+    justify-items: center;
 }
 
 .book-div {
     background-color: rgb(233, 233, 233);
-    height: 18rem;
-    width: 14rem;
+    height: 20rem;
+    width: 16rem;
     margin: 0 1rem 1rem 0;
     padding: 0.3rem 1rem 1rem 1rem;
     display: grid;
@@ -118,10 +118,41 @@ body {
 }
 
 .gray-background {
+    display: none;
     background-color: rgba(134, 134, 134, 0.856);
     width: 100vw;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
+}
+
+@media (max-width: 2150px) {
+    .library-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1750px) {
+    .library-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1300px) {
+    .container {
+        width: 95%;
+    } 
+}
+
+@media (max-width: 970px) {
+    .library-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .library-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
