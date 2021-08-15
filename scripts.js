@@ -10,10 +10,10 @@ const author = document.querySelector('.new-author')
 const pages = document.querySelector('.new-pages')
 
 
-let submitBtn = document.querySelector('.sub')
+let submitBtn = document.querySelector('.add-book')
 let books = [];
 
-
+// Book object 
 function Book(title, author, pages, readStatus) {
     this.title = title
     this.author = author
@@ -22,19 +22,55 @@ function Book(title, author, pages, readStatus) {
     this.id = Math.ceil(Math.random() * 10000) + title
 }        
 
+// Add book object to books array
 Book.prototype.addBook = function() {
     books.push(this)
 }
 
+// Create new book 
 submitBtn.addEventListener('click', function(e) {
-    const readStatus = document.querySelector('input[name=read-status]:checked')
     e.preventDefault();
-    const newBook = new Book(title.value, author.value, pages.value, readStatus.value) 
-    newBook.addBook()
-    createElements(newBook)
-    closeNewBookForm()
+    
+    const readStatus = document.querySelector('input[name=read-status]:checked')
+    checkInputFields() 
+    if (Array.from(document.querySelectorAll('.empty-field-error')).some(element => element.style.display == 'block') == false) {
+        const newBook = new Book(title.value, author.value, pages.value, readStatus.value) 
+        newBook.addBook()
+        createElements(newBook)
+        closeNewBookForm()
+        clearErrorMessages()
+        setLocalStorage()
+    }
 })
 
+// Check for empty input fields
+function checkInputFields() {
+    const inputFields = newBookForm.querySelectorAll('input')
+    inputFields.forEach(element => {
+        if (element.type == 'text') {
+            if (element.value == '') {
+                document.querySelector(`#${element.className}-error`).style.display = 'block';
+            } else {
+                document.querySelector(`#${element.className}-error`).style.display = '';
+            }
+        }
+        if (element.type == 'radio') {
+            if (document.querySelector('input[name=read-status]:checked') == null) {
+                document.querySelector('#read-status-error').style.display = 'block'
+            } else {
+                document.querySelector('#read-status-error').style.display = ''
+            }
+        }
+    })
+}
+
+// Remove input error messages
+function clearErrorMessages() {
+    const errorMessags = document.querySelectorAll('.empty-field-error');
+    Array.from(errorMessags).forEach(element => element.style.display = '')
+}
+
+// Create the book element div
 function createElements(ele) {
     const bookDiv = document.createElement('div');
     bookDiv.classList.add('book-div');
@@ -57,6 +93,7 @@ function createElements(ele) {
     libraryContainer.appendChild(bookDiv)
 }
 
+// Create book div text content
 function populateBookDiv(ele, obj) {
     const title = ele.querySelector('.title')
     const author = ele.querySelector('.author')
@@ -67,6 +104,7 @@ function populateBookDiv(ele, obj) {
     
 }
 
+// Toggle the read status
 function createReadToggle(ele) {
     const readBtn = document.createElement('button')
     readBtn.classList.add('read-btn')
@@ -74,6 +112,7 @@ function createReadToggle(ele) {
     return readBtn
 }
 
+// Close new book modal
 function closeNewBookForm() {
     const newBookModalInputs = newBookForm.querySelectorAll('input')
     newBookForm.style.display = 'none';
@@ -84,16 +123,30 @@ function closeNewBookForm() {
     })
 }
 
+function setLocalStorage() {
+    localStorage.setItem('storedBooks', JSON.stringify(books));
+}
+
+function getLocalStorage() {
+    const storedBooks = JSON.parse(localStorage.getItem('storedBooks'));
+    if (storedBooks !== null) {
+        books = storedBooks
+        books.forEach(ele => createElements(ele))
+    }
+    
+}
+
 libraryContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('read-btn')) {
         let readBtnText = e.target.textContent == 'Read' ? 'Not Read' : 'Read'
         const identifier = e.target.parentElement.getAttribute('data-id');
         e.target.textContent = readBtnText
         books.forEach(((book) => {
-            if (book.title == identifier) {
+            if (book.id == identifier) {
                 book.readStatus = readBtnText
             }
         }))
+        setLocalStorage()
     }
 
     if (e.target.classList.contains('delete')) {
@@ -103,6 +156,7 @@ libraryContainer.addEventListener('click', (e) => {
         }))
         
         e.target.parentElement.remove();
+        setLocalStorage()
     }
 })
 
@@ -113,4 +167,7 @@ NewBookModalBtn.addEventListener('click', () => {
 
 closeModalBtn.addEventListener('click', () => {
     closeNewBookForm()
+    clearErrorMessages()
 })
+
+getLocalStorage()

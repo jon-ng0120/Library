@@ -14,38 +14,45 @@
 </head>
 <body>
     <div class="container">
-        <h1>Library</h1>
-        <button class="open-new-book">Add Book</button>
+        <div class="header">
+            <img src="images/book.png" alt="book">
+            <h1>Library</h1>
+        </div>
         <div class="new-book-modal">
             <div class="new-book-inputs">
                 <span class="close-modal">x</span>
-                <h2>New Book</h2>
+                <h2>Add New Book</h2>
                 <div>
-                    <label>Title</label>
-                    <input type="text" class="new-title"> <!-- 50 char max-->
+                    <label>Title *</label>
+                    <input type="text" maxlength="50" class="new-title"> <!-- 50 char max-->
+                    <p class="empty-field-error" id="new-title-error">Please fill in this field</p>
                 </div>
                 <div>
-                    <label>Author</label>
-                    <input type="text" class="new-author">
+                    <label>Author *</label>
+                    <input type="text" maxlength="50" class="new-author">
+                    <p class="empty-field-error" id="new-author-error">Please fill in this field</p>
                 </div>
                 <div>
-                    <label>Pages</label>
-                    <input type="text" class="new-pages">
+                    <label>Pages *</label>
+                    <input type="text" maxlength="50" class="new-pages">
+                    <p class="empty-field-error" id="new-pages-error">Please fill in this field</p>
                 </div>
                 <div>
-                    <p class="read-status">Have you read it?</p>
+                    <label class="read-status">Have you read it? *</label>
                     <input type="radio" name="read-status" value="Read" id="read-status-yes">
                     <label for="read-status-yes">Yes</label>
                     <input type="radio" name="read-status" value="Not Read" id="read-status-no">
                     <label for="read-status-no">No</label>
+                    <p class="empty-field-error" id="read-status-error">Please select an option</p>
                 </div>
             </div>
             
-            <button class="sub">Add Book</button>
+            <button class="add-book">Add Book</button>
         </div>
         <div class="library-container">
 
         </div>
+        <button class="open-new-book">+</button>
         <div class="gray-background"></div>
     </div>
     <script src="scripts.js"></script>
