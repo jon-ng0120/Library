@@ -13,19 +13,22 @@ const pages = document.querySelector('.new-pages')
 let submitBtn = document.querySelector('.add-book')
 let books = [];
 
-// Book object 
-function Book(title, author, pages, readStatus) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.readStatus = readStatus
-    this.id = Math.ceil(Math.random() * 10000) + title
-}        
+// Book class 
+class Book {
+    constructor(title, author, pages, readStatus) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.readStatus = readStatus
+        this.id = Math.ceil(Math.random() * 10000) + title
+    }
 
-// Add book object to books array
-Book.prototype.addBook = function() {
-    books.push(this)
+    // Add book object to books array
+    addBook() {
+        books.push(this)
+    }
 }
+
 
 // Create new book 
 submitBtn.addEventListener('click', function(e) {
@@ -123,20 +126,25 @@ function closeNewBookForm() {
     })
 }
 
+// Sets books array to local storage
+
 function setLocalStorage() {
     localStorage.setItem('storedBooks', JSON.stringify(books));
 }
 
+
+// Gets book array from local storage
 function getLocalStorage() {
     const storedBooks = JSON.parse(localStorage.getItem('storedBooks'));
     if (storedBooks !== null) {
         books = storedBooks
-        books.forEach(ele => createElements(ele))
+        books.forEach(ele => createElements(ele)) // creates div for each item in stored local storage
     }
     
 }
-
+ 
 libraryContainer.addEventListener('click', (e) => {
+    // Changes read status of book
     if (e.target.classList.contains('read-btn')) {
         let readBtnText = e.target.textContent == 'Read' ? 'Not Read' : 'Read'
         const identifier = e.target.parentElement.getAttribute('data-id');
@@ -149,6 +157,7 @@ libraryContainer.addEventListener('click', (e) => {
         setLocalStorage()
     }
 
+    // Deletes book object from book array
     if (e.target.classList.contains('delete')) {
         const identifier = e.target.parentElement.getAttribute('data-id');
         books.forEach(((book, index) => {
@@ -160,14 +169,17 @@ libraryContainer.addEventListener('click', (e) => {
     }
 })
 
+// Displays new book modal
 NewBookModalBtn.addEventListener('click', () => {
     newBookForm.style.display = 'flex';
     grayBackgroundDiv.style.display = 'block';
 })
 
+// Closes new book modal
 closeModalBtn.addEventListener('click', () => {
     closeNewBookForm()
     clearErrorMessages()
 })
 
+// Runs on page load to grab local storage key
 getLocalStorage()
